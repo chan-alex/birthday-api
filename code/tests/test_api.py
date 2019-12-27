@@ -4,17 +4,22 @@ import requests
 url_prefix = "http://127.0.0.1:5000/"
 
 
-def call_api(url):
-    try:
-        response = requests.get(url)
-    except:
-        pytest.fail("Error when calling api. Is the process running?")
-        return False
-    return response    
-
-
 def test_root():
     response = requests.get(url_prefix)
-    response = call_api(url_prefix)
     assert response.status_code == 404
 
+
+def test_get():
+    url = url_prefix + 'hello/jimmy'
+    response = requests.get(url)
+    assert response.status_code == 200
+
+
+def test_put():
+    url = url_prefix + 'hello/jackey'
+    headers = {"Content-Type": "application/json"}
+    json = '{ "dateOfBirth": "1990-12-27" }'
+    response = requests.put(url, headers=headers, data=json)
+
+    assert response.status_code == 204
+    assert response.content == b'' 
