@@ -7,14 +7,14 @@ api = Api(app)
 
 
 class Birthday(Resource):
-    def get(self, name):
-        return { "message": "Hello, {}. Your birthday is in N days".format(name)}
+    def get(self, username):
+        return { "message": "Hello, {}. Your birthday is in N days".format(username)}
 
-    def put(self, name):
+    def put(self, username):
         request_data = request.get_json(force=True) # force=True relax content-type requirement
         return "", 204
 
 
-api.add_resource(Birthday, '/hello/<string:name>')
+api.add_resource(Birthday, '/hello/<string:username>')
 
 app.run(port=5000, debug=True)    
