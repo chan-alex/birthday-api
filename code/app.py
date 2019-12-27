@@ -7,10 +7,16 @@ api = Api(app)
 
 
 class Birthday(Resource):
+
     def get(self, username):
-        return { "message": "Hello, {}. Your birthday is in N days".format(username)}
+        return { "message": "Hello, {}. Your birthday is in N days".format(username) }
+
 
     def put(self, username):
+        # Check if supplied user name contains only letters.
+        if username.isalpha() == False:
+            return { "message": "User name should contain alphabets only" }, 422  # return for easier testing.
+
         request_data = request.get_json(force=True) # force=True relax content-type requirement
         return "", 204
 

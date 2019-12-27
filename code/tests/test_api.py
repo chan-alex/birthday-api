@@ -23,3 +23,13 @@ def test_put():
 
     assert response.status_code == 204
     assert response.content == b'' 
+
+
+def test_put_invalid_name():
+    url = url_prefix + 'hello/jackey123'
+    headers = {"Content-Type": "application/json"}
+    json = '{ "dateOfBirth": "1990-12-27" }'
+    response = requests.put(url, headers=headers, data=json)
+
+    assert response.status_code == 422
+    assert response.content == b'{\n    "message": "User name should contain alphabets only"\n}\n'
