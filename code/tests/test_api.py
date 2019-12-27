@@ -33,3 +33,31 @@ def test_put_invalid_name():
 
     assert response.status_code == 422
     assert response.content == b'{\n    "message": "User name should contain alphabets only"\n}\n'
+
+
+# also tests the no dateOfBirth field case
+def test_put_invalid_dateOfBirth_fieldname():
+    url = url_prefix + 'hello/jackey'
+    headers = {"Content-Type": "application/json"}
+    json = '{ "dateOfBirthXXX": "1990-12-27" }'
+    response = requests.put(url, headers=headers, data=json)
+
+    assert response.status_code == 400
+
+
+def test_put_invalid_json():
+    url = url_prefix + 'hello/jackey'
+    headers = {"Content-Type": "application/json"}
+    json = '"dateOfBirth": 1990-12-27'
+    response = requests.put(url, headers=headers, data=json)
+
+    assert response.status_code == 400
+
+
+def test_put_invalid_dateOfBirth_date():
+    url = url_prefix + 'hello/jackey'
+    headers = {"Content-Type": "application/json"}
+    json = '{ "dateOfBirth": "1990" }'
+    response = requests.put(url, headers=headers, data=json)
+
+    assert response.status_code == 400
