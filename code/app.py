@@ -12,7 +12,7 @@ class Birthday(Resource):
 
     def put(self, name):
         request_data = request.get_json(force=True) # force=True relax content-type requirement
-        return request_data
+        return "", 204
 
 
 api.add_resource(Birthday, '/hello/<string:name>')
