@@ -1,6 +1,7 @@
 import json, datetime
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api, reqparse
+from Models import BirthdayModel
 
 
 app = Flask(__name__)
@@ -14,8 +15,8 @@ class Birthday(Resource):
 
 
     def put(self, username):
-        # Check if supplied user name contains only letters.
-        if username.isalpha() == False:
+
+        if BirthdayModel.valid_username(username) == False:
             return { "message": "User name should contain alphabets only" }, 422  # return for easier testing.
 
         parser = reqparse.RequestParser()
@@ -26,9 +27,7 @@ class Birthday(Resource):
         )
         json_payload = parser.parse_args()
         dob = json_payload['dateOfBirth']
-        try:
-            dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
-        except:
+        if BirthdayModel.valid_dob(dob) == False:
             return { "message": "dateOfBirth should be in YYYY-MM-DD" }, 400  # return for easier testing.
 
         return "", 204
