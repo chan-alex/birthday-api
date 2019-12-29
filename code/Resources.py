@@ -1,3 +1,4 @@
+import logging
 from flask_restful import Resource, reqparse
 from Models import BirthdayModel
 
@@ -6,6 +7,7 @@ class Birthday(Resource):
 
     def get(self, username):
         if BirthdayModel.valid_username(username) is False:
+            logging.debug("GET method: invalid username = {}. Rejecting.".format(username))
             return {"message": "User name should contain alphabets only"}, 422  # return for easier testing.
 
         days = BirthdayModel.days_till_birthday(username)
@@ -16,6 +18,7 @@ class Birthday(Resource):
 
     def put(self, username):
         if BirthdayModel.valid_username(username) is False:
+            logging.debug("GET method: invalid username = {}. Rejecting.".format(username))
             return {"message": "User name should contain alphabets only"}, 422  # return for easier testing.
 
         parser = reqparse.RequestParser()
@@ -27,9 +30,11 @@ class Birthday(Resource):
         json_payload = parser.parse_args()
         dob = json_payload['dateOfBirth']
         if BirthdayModel.valid_dob(dob) is False:
+            logging.debug("GET method: invalid DOB = {}. Rejecting.".format(dob))
             return {"message": "dateOfBirth should be in YYYY-MM-DD"}, 400  # return for easier testing.
 
         birthday = BirthdayModel(username, dob)
         birthday.save_to_db()
+        logging.debug("Saving username = {}".format(username))
 
         return "", 204
