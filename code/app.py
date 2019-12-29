@@ -1,4 +1,4 @@
-import json, datetime
+import json, datetime, os
 from flask import Flask, request, jsonify
 from flask_restful import Api
 from Models import BirthdayModel
@@ -7,7 +7,7 @@ from Resources import Birthday
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///data.db')
 api = Api(app)
 
 
