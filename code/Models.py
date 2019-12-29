@@ -9,26 +9,22 @@ class BirthdayModel(db.Model):
     username = db.Column(db.String(80))
     dateOfBirth = db.Column(db.String(10))
 
-
     def __init__(self, username, dob):
         self.username = username
         self.dateOfBirth = dob
 
-
     def __str__(self):
         return 'name = {self.username}, dob = {self.dateOfBirth}'.format(self=self)
-
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-
     @classmethod
     def days_till_birthday(cls, name):
         query_result = BirthdayModel.find_by_username(name)
 
-        if query_result == None:
+        if query_result is None:
             return None
 
         dob = datetime.datetime.strptime(query_result.dateOfBirth, '%Y-%m-%d')
@@ -49,12 +45,9 @@ class BirthdayModel(db.Model):
         else:
             return (next_year_dob - today).days
 
-
-
     @classmethod
     def valid_username(cls, name):
-        return name.isalpha() == True
-
+        return name.isalpha()
 
     @classmethod
     def valid_dob(cls, dob):
@@ -64,7 +57,6 @@ class BirthdayModel(db.Model):
             print(e)
             return False
         return True
-
 
     @classmethod
     def find_by_username(cls, name):

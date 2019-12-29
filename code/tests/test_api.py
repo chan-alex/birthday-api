@@ -1,6 +1,7 @@
-import pytest
 import requests
-import random, string, datetime
+import random
+import string
+import datetime
 
 url_prefix = "http://127.0.0.1:5000/"
 
@@ -23,7 +24,7 @@ def test_put():
     response = requests.put(url, headers=headers, data=json)
 
     assert response.status_code == 204
-    assert response.content == b'' 
+    assert response.content == b''
 
 
 def test_put_invalid_name():
@@ -33,7 +34,6 @@ def test_put_invalid_name():
     response = requests.put(url, headers=headers, data=json)
 
     assert response.status_code == 422
-    assert response.content == b'{\n    "message": "User name should contain alphabets only"\n}\n'
 
 
 # also tests the no dateOfBirth field case
@@ -81,7 +81,7 @@ def get_test_dob(year=1990, delta=0):
     elif delta > 0:
         dob = today + datetime.timedelta(days=abs(delta))
 
-    dob = datetime.datetime(year,dob.month,dob.day)
+    dob = datetime.datetime(year, dob.month, dob.day)
     return dob.strftime("%Y-%m-%d")
 
 
