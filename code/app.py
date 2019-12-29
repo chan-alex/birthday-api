@@ -21,8 +21,11 @@ class Birthday(Resource):
         if BirthdayModel.valid_username(username) == False:
             return { "message": "User name should contain alphabets only" }, 422  # return for easier testing.
 
-        print(BirthdayModel.find_by_username(username))
-        return { "message": "Hello, {}. Your birthday is in N days".format(username) }
+        days = BirthdayModel.days_till_birthday(username)
+        if days == 0:
+            return { "message": "Hello, {}! Happy birthday!".format(username) }
+        elif days != None:
+            return { "message": "Hello, {}. Your birthday is in {} days".format(username, days) }
 
 
     def put(self, username):
