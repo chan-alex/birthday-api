@@ -109,3 +109,9 @@ def test_get_dob():
     dob_test_helper(5)
     dob_test_helper(0)
     dob_test_helper(-5)
+
+
+def test_liveness_probe():
+    url = url_prefix + 'hello/liveness'
+    response = requests.get(url)
+    assert response.status_code == 200

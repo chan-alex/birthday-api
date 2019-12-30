@@ -20,6 +20,11 @@ def create_tables():
 api.add_resource(Birthday, '/hello/<string:username>')
 
 
+@app.route('/liveness')
+def liveness_probe():
+    return "ok", 200
+
+
 if __name__ == '__main__':
     import logging
     from db import db
