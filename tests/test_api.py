@@ -1,9 +1,11 @@
+import os
 import requests
 import random
 import string
 import datetime
 
-url_prefix = "http://127.0.0.1:5000/"
+url_prefix = os.environ.get('TEST_URL_PREFIX',
+                            'http://127.0.0.1:5000/')
 
 
 def test_root():
