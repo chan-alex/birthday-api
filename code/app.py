@@ -3,6 +3,8 @@ import logging
 from flask import Flask
 from flask_restful import Api
 from Resources import Birthday
+from db import db
+
 
 logfile = os.environ.get('APP_LOG', 'app.log')
 logging.basicConfig(
@@ -15,6 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     os.environ.get('DATABASE_URI', 'sqlite:///data.db')
 api = Api(app)
+db.init_app(app)
 
 
 @app.before_first_request
@@ -32,9 +35,6 @@ def liveness_probe():
 
 
 if __name__ == '__main__':
-    from db import db
-
-    db.init_app(app)
     if os.environ.get('FLASK_DEBUG') == '1':
         flask_debug = True
     else:
