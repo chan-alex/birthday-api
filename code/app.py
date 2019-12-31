@@ -1,8 +1,14 @@
 import os
+import logging
 from flask import Flask
 from flask_restful import Api
 from Resources import Birthday
 
+logfile = os.environ.get('APP_LOG', 'app.log')
+logging.basicConfig(
+        filename=logfile,
+        level=logging.DEBUG
+    )
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -26,14 +32,7 @@ def liveness_probe():
 
 
 if __name__ == '__main__':
-    import logging
     from db import db
-
-    logfile = os.environ.get('APP_LOG', 'app.log')
-    logging.basicConfig(
-        filename=logfile,
-        level=logging.DEBUG
-    )
 
     db.init_app(app)
     if os.environ.get('FLASK_DEBUG') == '1':
