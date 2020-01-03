@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 
 RUN apk add nginx 
 
-RUN adduser -D appuser
+RUN adduser -D appuser 
 USER appuser
 
 WORKDIR /home/appuser
@@ -23,6 +23,9 @@ RUN chown -R appuser:appuser ./
 RUN mkdir /run/nginx && chown -R appuser.appuser /run && \
   chown -R appuser.appuser /var/lib/nginx && \
   chown -R appuser.appuser /var/log/nginx
+
+
+RUN mkdir /disk && chown -R appuser.appuser /disk
 
 USER appuser
 EXPOSE 5000

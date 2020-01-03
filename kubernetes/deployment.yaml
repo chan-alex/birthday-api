@@ -10,13 +10,28 @@ spec:
       labels:
         app: birthday-app
     spec:
+      securityContext:
+        fsGroup: 1000
+      volumes:
+      - name: birthday-app-vol
+        gcePersistentDisk:
+          pdName: birthday-app-vol-1
+          fsType: ext4
       containers:
       - name:  birthday-app
-        image: docker.io/chanalex/birthday-app:0.1
+        image: docker.io/chanalex/birthday-app:0.2
         livenessProbe:
           httpGet:
             path: hello/liveness
             port: 5000
+        env:
+        - name: APP_LOG
+          value: /disk/app.log
+        - name: DATABASE_URI
+          value:  'sqlite:////disk/data.db'
+        volumeMounts:
+        - name: birthday-app-vol
+          mountPath: /disk
         ports:
             - name: app-port
               containerPort: 5000
