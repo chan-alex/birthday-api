@@ -34,6 +34,11 @@ def liveness_probe():
     return "ok \n", 200
 
 
+@app.route('/readiness')
+def readiness_probe():
+    return "ready \n", 200
+
+
 if __name__ == '__main__':
     if os.environ.get('FLASK_DEBUG') == '1':
         flask_debug = True
