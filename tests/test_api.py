@@ -9,17 +9,24 @@ url_prefix = os.environ.get('TEST_URL_PREFIX',
 
 
 def test_root():
+    ''' Tests GET for / '''
     response = requests.get(url_prefix)
+
+    # Should return at least a 404
     assert response.status_code == 404
 
 
 def test_get():
+    ''' Test GET for /hello/<name> '''
     url = url_prefix + 'hello/jimmy'
     response = requests.get(url)
+
+    # Should return at least a 202
     assert response.status_code == 200
 
 
 def test_put():
+    ''' Test PUT for /hello/<name> '''
     url = url_prefix + 'hello/jackey'
     headers = {"Content-Type": "application/json"}
     json = '{ "dateOfBirth": "1990-12-27" }'
@@ -30,6 +37,7 @@ def test_put():
 
 
 def test_put_invalid_name():
+    ''' Test PUT for /hello/<name> where name is in invalid format '''
     url = url_prefix + 'hello/jackey123'
     headers = {"Content-Type": "application/json"}
     json = '{ "dateOfBirth": "1990-12-27" }'
@@ -38,8 +46,8 @@ def test_put_invalid_name():
     assert response.status_code == 422
 
 
-# also tests the no dateOfBirth field case
 def test_put_invalid_dateOfBirth_fieldname():
+    ''' Test PUT for /hello/<name> where dateOfBirth field is wrong or missing '''
     url = url_prefix + 'hello/jackey'
     headers = {"Content-Type": "application/json"}
     json = '{ "dateOfBirthXXX": "1990-12-27" }'
@@ -49,6 +57,7 @@ def test_put_invalid_dateOfBirth_fieldname():
 
 
 def test_put_invalid_json():
+    ''' Test PUT for /hello/<name> where the json is invalid '''
     url = url_prefix + 'hello/jackey'
     headers = {"Content-Type": "application/json"}
     json = '"dateOfBirth": 1990-12-27'
@@ -58,6 +67,7 @@ def test_put_invalid_json():
 
 
 def test_put_invalid_dateOfBirth_date():
+    ''' Test PUT for /hello/<name> where the birthday date is invalid '''
     url = url_prefix + 'hello/jackey'
     headers = {"Content-Type": "application/json"}
     json = '{ "dateOfBirth": "1990" }'
@@ -67,7 +77,7 @@ def test_put_invalid_dateOfBirth_date():
 
 
 def randomString(stringLength=10):
-    """Generate a random string of fixed length """
+    ''' Generate a random string of fixed length '''
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
@@ -108,12 +118,21 @@ def dob_test_helper(day_delta):
 
 
 def test_get_dob():
+    ''' This set of tests test the birthday calcuations '''
     dob_test_helper(5)
     dob_test_helper(0)
     dob_test_helper(-5)
 
 
 def test_liveness_probe():
+    ''' Tests the liveness probe '''
     url = url_prefix + 'hello/liveness'
+    response = requests.get(url)
+    assert response.status_code == 200
+
+
+def test_readiness_probe():
+    ''' Tests the readiness probe '''
+    url = url_prefix + 'hello/readiness'
     response = requests.get(url)
     assert response.status_code == 200

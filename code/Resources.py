@@ -6,6 +6,7 @@ from Models import BirthdayModel
 class Birthday(Resource):
 
     def get(self, username):
+        ''' Implements the GET method '''
         if BirthdayModel.valid_username(username) is False:
             logging.debug("GET method: invalid username = {}. Rejecting.".format(username))
             return {"message": "User name should contain alphabets only"}, 422  # return for easier testing.
@@ -17,6 +18,7 @@ class Birthday(Resource):
             return {"message": "Hello, {}. Your birthday is in {} days".format(username, days)}
 
     def put(self, username):
+        ''' Implements the PUT method '''
         if BirthdayModel.valid_username(username) is False:
             logging.debug("GET method: invalid username = {}. Rejecting.".format(username))
             return {"message": "User name should contain alphabets only"}, 422  # return for easier testing.

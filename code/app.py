@@ -20,20 +20,24 @@ api = Api(app)
 db.init_app(app)
 
 
+# Things to do before the first requests
 @app.before_first_request
 def create_tables():
     logging.info("Creating tables")
     db.create_all()
 
 
+# The main part of the REST api
 api.add_resource(Birthday, '/hello/<string:username>')
 
 
+# Simple liveness probe
 @app.route('/liveness')
 def liveness_probe():
     return "ok \n", 200
 
 
+# Simple readiness probe
 @app.route('/readiness')
 def readiness_probe():
     return "ready \n", 200
