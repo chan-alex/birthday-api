@@ -4,6 +4,7 @@ metadata:
   name: birthday-app
 spec:
   replicas: 1
+  minReadySeconds: 10
   template:
     metadata:
       name: birthday-app      
@@ -11,7 +12,7 @@ spec:
         app: birthday-app
     spec:
       securityContext:
-        fsGroup: 1000
+        fsGroup: 1000  # allow appuser to access disk
       volumes:
       - name: birthday-app-vol
         gcePersistentDisk:
